@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <!-- Background -->
+  <rect width="180" height="180" fill="#1e293b" rx="40"/>
+  
+  <!-- Outer circle accent -->
+  <circle cx="90" cy="90" r="85" fill="none" stroke="#10b981" stroke-width="3"/>
+  
+  <!-- Inner circle for SS -->
+  <circle cx="90" cy="90" r="70" fill="#10b981" opacity="0.15"/>
+  
+  <!-- SS Text -->
+  <text x="90" y="110" font-size="80" font-weight="bold" fill="#10b981" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif">SS</text>
+  
+  <!-- Subtle security line at bottom -->
+  <path d="M 50 130 Q 90 145 130 130" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
