@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: credit-union-system
+    runtime: php
+    buildCommand: composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && npm install && npm run build
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        fromSecret: app-key
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase: postgres
+      - key: DB_PORT
+        fromDatabase: postgres
+      - key: DB_DATABASE
+        fromDatabase: postgres
+      - key: DB_USERNAME
+        fromDatabase: postgres
+      - key: DB_PASSWORD
+        fromDatabase: postgres
+databases:
+  - name: postgres
+    databaseName: credit_union_db
+    user: credit_union_user
