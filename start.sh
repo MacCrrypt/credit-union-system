@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Run migrations
+echo "Caching config..."
+php artisan config:cache
+
+echo "Caching routes..."
+php artisan route:cache
+
+echo "Running migrations..."
 php artisan migrate --force
-
-# Start the server
-php artisan serve --host=0.0.0.0 --port=$PORT
