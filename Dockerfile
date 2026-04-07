@@ -11,7 +11,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Install Node.js
 RUN apt-get update && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sh && \
     apt-get install -y nodejs
 
 # Build assets
