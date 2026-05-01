@@ -290,6 +290,7 @@ class UserController extends Controller
 
             // A streamed response writes rows directly to the output buffer.
             // That keeps memory usage low even if the export grows over time.
+            fputcsv($handle, ['Note: When opening this file in Excel or another spreadsheet app, increase the column widths so the data displays cleanly.']);
             fputcsv($handle, ['User', 'Role', 'Branch', 'Action', 'Description', 'Created At']);
 
             foreach ($logs as $log) {

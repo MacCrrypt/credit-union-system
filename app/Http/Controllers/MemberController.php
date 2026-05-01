@@ -165,6 +165,7 @@ class MemberController extends Controller
 
             // Streamed CSV export is lightweight and avoids holding a full report
             // string in memory before sending it to the browser.
+            fputcsv($handle, ['Note: When opening this file in Excel or another spreadsheet app, increase the column widths so the data displays cleanly.']);
             fputcsv($handle, ['Account Number', 'Member Name', 'Created By', 'Creator Role', 'Branch', 'Created At']);
 
             foreach ($members as $member) {
