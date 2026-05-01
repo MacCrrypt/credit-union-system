@@ -8,8 +8,20 @@ Credit Union System is a multi-branch member signature-card and user accountabil
 - Branch admins create staff accounts, reset staff passwords, review member records, update signature cards, and delete member records when required.
 - The central admin creates branches, assigns branch admins, resets admin passwords, deletes users when necessary, and monitors activity across the institution.
 - Every important action is tied to a user for accountability and operational review.
+- Login attempts are throttled to reduce brute-force risk.
+- Disabled accounts are denied access immediately, even if an older session still exists.
+- Temporary passwords are issued securely and require a forced password reset before users can continue working.
+- Signature-card images are delivered from private storage, with a production-safe fallback switch for migration only.
 - Staff in the same branch can view signature cards created within their branch.
 - Central admin does not open member signature cards directly; member-card access stays at branch level.
+
+## Security and operational improvements
+
+- Rate-limited login requests prevent repeated authentication attacks.
+- Account disablement is enforced by middleware on every request.
+- Temporary password issuance now uses a one-time confirmation flow instead of exposing credentials in the main user list.
+- Production configuration templates include cookie hardening (`SESSION_SECURE_COOKIE`, `SESSION_SAME_SITE`) and explicit session settings.
+- Test environment configuration uses `CACHE_DRIVER=array` to avoid file-permission cache issues during automated runs.
 
 ## Core roles
 
@@ -64,6 +76,9 @@ The production flow is intentionally simple:
 7. Each branch admin creates staff accounts.
 
 Branch records are not intended to be pre-seeded in production.
+
+- Ensure the production `.env` is configured with secure session cookies and storage settings before first deployment.
+- After any upgrade from legacy public storage, migrate signature files into private disk storage and keep `SIGNATURE_ALLOW_PUBLIC_FALLBACK=false` in production.
 
 ## Technology stack
 
@@ -121,6 +136,8 @@ Production should keep `SIGNATURE_ALLOW_PUBLIC_FALLBACK=false` so signature card
 ## Storage and growth reality
 
 The main long-term storage cost is signature-card images, not users or logs.
+
+Because signature cards are sensitive, the application serves them from private authenticated storage by default. This means storage planning should account for capacity and backup of `storage/app/private`.
 
 Approximate growth if average signature image size remains near 1 MB:
 
