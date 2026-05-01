@@ -1,59 +1,164 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Credit Union System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Credit Union System is a multi-branch member signature-card and user accountability platform built for credit union operations. It is designed to help staff register members accurately, help branch admins supervise branch activity, and help the central admin monitor performance across all branches.
 
-## About Laravel
+## What the application does
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Staff create member signature-card records.
+- Branch admins create staff accounts, reset staff passwords, review member records, update signature cards, and delete member records when required.
+- The central admin creates branches, assigns branch admins, resets admin passwords, deletes users when necessary, and monitors activity across the institution.
+- Every important action is tied to a user for accountability and operational review.
+- Staff in the same branch can view signature cards created within their branch.
+- Central admin does not open member signature cards directly; member-card access stays at branch level.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Core roles
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Central Admin
 
-## Learning Laravel
+- Creates branches from inside the application.
+- Creates branch admin accounts and assigns them to branches.
+- Resets branch admin passwords.
+- Deletes admin or staff users when necessary.
+- Views institution-wide activity and branch performance summaries.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Branch Admin
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Creates staff accounts within their branch.
+- Resets passwords for staff they created.
+- Views member records and updates signature cards.
+- Deletes member records after reviewing the delete preview.
+- Monitors staff activity within their branch scope.
 
-## Laravel Sponsors
+### Staff
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Creates member records.
+- Uploads member signature-card images.
+- Searches and views member records.
 
-### Premium Partners
+## Current operational features
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- Role-based access control for central admin, branch admin, and staff.
+- Branch management by central admin.
+- User management with password reset and deletion controls.
+- Member creation with preview before save.
+- Member signature-card update preview.
+- Member delete preview for accuracy.
+- Branch-scoped member visibility so branch teams can collaborate without cross-branch exposure.
+- Private authenticated delivery for signature-card images.
+- Branch performance summary on the dashboard.
+- CSV export for member reports and activity logs.
+- Activity logging for operational accountability.
+- Image upload optimization hook for signature images.
+- Activity-log pruning command for retention control.
 
-## Contributing
+## Production setup flow
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The production flow is intentionally simple:
 
-## Code of Conduct
+1. Deploy the application.
+2. Run migrations.
+3. Seed the central admin account.
+4. Log in as central admin.
+5. Create branches from the application.
+6. Create a branch admin for each branch.
+7. Each branch admin creates staff accounts.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Branch records are not intended to be pre-seeded in production.
 
-## Security Vulnerabilities
+## Technology stack
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- PHP 8.2+
+- Laravel 12
+- Blade templates
+- MySQL or MariaDB
+- Private local disk storage for signature-card images
 
-## License
+## Environment requirements
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- PHP 8.2 or higher
+- MySQL 8+ or MariaDB 10.6+
+- Web server such as Apache or Nginx
+- Writable `storage` and `bootstrap/cache` directories
+- PHP `gd` extension recommended for image optimization
+
+If `gd` is not enabled, the application still works, but signature images will be stored without optimization.
+
+## Installation
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+# Set CENTRAL_ADMIN_EMAIL and CENTRAL_ADMIN_PASSWORD in production before seeding
+php artisan db:seed
+npm install
+npm run build
+```
+
+## Useful commands
+
+Run the development stack:
+
+```bash
+composer run dev
+```
+
+Prune old activity logs to control database growth:
+
+```bash
+php artisan activity-logs:prune 365
+```
+
+Move older public signature files into private storage after upgrading:
+
+```bash
+php artisan signatures:migrate-private
+```
+
+Production should keep `SIGNATURE_ALLOW_PUBLIC_FALLBACK=false` so signature cards are served only from private storage after migration.
+
+## Storage and growth reality
+
+The main long-term storage cost is signature-card images, not users or logs.
+
+Approximate growth if average signature image size remains near 1 MB:
+
+- 10,000 members: about 10 GB
+- 50,000 members: about 50 GB
+- 100,000 members: about 100 GB
+
+If the server has PHP `gd` enabled and images are optimized effectively, average storage can drop significantly.
+
+## Recommended production server baseline
+
+For the current planned scale of about 16 branches, 1 admin per branch, and about 5 staff per branch:
+
+- 4 vCPU
+- 8 GB RAM
+- 200 GB SSD minimum
+
+Recommended for more comfortable long-term growth:
+
+- 4 vCPU
+- 8 GB RAM
+- 500 GB SSD
+
+## Maintenance considerations
+
+- Monitor disk usage because signature images will grow fastest.
+- Back up the database and `storage/app/private`, because signature cards are served from private storage.
+- If the application is upgraded from an older public-storage setup, migrate those files with `php artisan signatures:migrate-private` and then keep `SIGNATURE_ALLOW_PUBLIC_FALLBACK=false` in production.
+- Prune old activity logs based on company retention policy.
+- Enable PHP `gd` in production for smaller stored images.
+- Review branch growth and storage use periodically.
+
+## Initial central admin seed
+
+The database seeder creates the initial central admin account using environment variables:
+
+- `CENTRAL_ADMIN_EMAIL`
+- `CENTRAL_ADMIN_PASSWORD`
+
+In production, `CENTRAL_ADMIN_PASSWORD` must be set before running `php artisan db:seed`.
+In non-production environments, the seeder generates a strong password and prints it in the console if one is not provided.

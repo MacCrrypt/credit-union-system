@@ -63,6 +63,23 @@ return [
     ],
 
     /*
+    |----------------------------------------------------------------------
+    | Signature Card Storage
+    |----------------------------------------------------------------------
+    |
+    | Signature cards are sensitive records, so new uploads should live on
+    | private storage by default. Public fallback exists only as a temporary
+    | bridge for older files until they are migrated with
+    | `php artisan signatures:migrate-private`.
+    |
+    */
+
+    'signature_cards' => [
+        'disk' => env('SIGNATURE_CARD_DISK', 'local'),
+        'allow_public_fallback' => (bool) env('SIGNATURE_ALLOW_PUBLIC_FALLBACK', false),
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Symbolic Links
     |--------------------------------------------------------------------------

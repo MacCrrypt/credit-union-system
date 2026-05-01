@@ -25,12 +25,19 @@
                     <a href="{{ route('dashboard') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('dashboard') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('members.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('members.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                        Members
-                    </a>
+                    @if (! auth()->user()->isCentralAdmin())
+                        <a href="{{ route('members.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('members.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                            Members
+                        </a>
+                    @endif
                     @if (auth()->user()->isAdmin())
+                        @if (auth()->user()->isCentralAdmin())
+                            <a href="{{ route('admin.branches.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('admin.branches.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                                Branches
+                            </a>
+                        @endif
                         <a href="{{ route('admin.users.index') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('admin.users.*') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                            Staff
+                            Users
                         </a>
                         <a href="{{ route('admin.activity-logs') }}" class="block rounded-3xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('admin.activity-logs') ? 'bg-slate-800 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                             Activity Logs
@@ -40,7 +47,7 @@
 
                 <div class="border-t border-white/10 px-6 py-5">
                     <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Signed in as</p>
-                    <p class="mt-2 text-sm font-medium">{{ auth()->user()->name }}</p>
+                    <p class="mt-2 text-sm font-medium">{{ auth()->user()?->name }}</p>
                     <form method="POST" action="{{ route('logout') }}" class="mt-4">
                         @csrf
                         <button type="submit" class="inline-flex w-full items-center justify-center rounded-3xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200">
@@ -59,10 +66,41 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-3">
                             <div class="hidden rounded-3xl bg-slate-100 px-4 py-3 text-sm text-slate-700 sm:block">
-                                Good to see you, {{ auth()->user()->name }}
+                                Good to see you, {{ auth()->user()?->name }}
                             </div>
+                            <form method="POST" action="{{ route('logout') }}" class="lg:hidden">
+                                @csrf
+                                <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">
+                                    Logout
+                                </button>
+                            </form>
                         </div>
                     </div>
+                    <nav class="border-t border-slate-200 bg-white lg:hidden">
+                        <div class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3 sm:px-6">
+                            <a href="{{ route('dashboard') }}" class="shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Dashboard
+                            </a>
+                            @if (! auth()->user()->isCentralAdmin())
+                                <a href="{{ route('members.index') }}" class="shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('members.*') ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    Members
+                                </a>
+                            @endif
+                            @if (auth()->user()->isAdmin())
+                                @if (auth()->user()->isCentralAdmin())
+                                    <a href="{{ route('admin.branches.index') }}" class="shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('admin.branches.*') ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                        Branches
+                                    </a>
+                                @endif
+                                <a href="{{ route('admin.users.index') }}" class="shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('admin.users.*') ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    Users
+                                </a>
+                                <a href="{{ route('admin.activity-logs') }}" class="shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('admin.activity-logs') ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    Activity Logs
+                                </a>
+                            @endif
+                        </div>
+                    </nav>
                 </header>
 
                 <main class="bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">

@@ -8,6 +8,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        https: true,
+        host: 'true',
+    },
     build: {
         rollupOptions: {
             output: {

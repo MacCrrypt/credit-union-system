@@ -22,9 +22,9 @@
 
                 <input name="name" value="{{ old('name') }}" placeholder="Name" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none" />
                 <input name="email" value="{{ old('email') }}" placeholder="Email" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none" />
-                <input name="password" type="password" placeholder="Password" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none" />
+                <input name="password" type="password" placeholder="Temporary password" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 focus:outline-none" />
 
-                <p class="text-sm text-slate-500">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</p>
+                <p class="text-sm text-slate-500">This starts as a temporary password. The user must change it after their first login.</p>
 
                 <input type="hidden" name="role" value="{{ auth()->user()->isCentralAdmin() ? 'admin' : 'staff' }}" />
 
@@ -37,6 +37,9 @@
                                 <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }} ({{ $branch->location ?? 'No location' }})</option>
                             @endforeach
                         </select>
+                        @if($branches->isEmpty())
+                            <p class="mt-2 text-sm text-amber-700">No branches exist yet. <a href="{{ route('admin.branches.create') }}" class="font-semibold underline">Create a branch first</a>.</p>
+                        @endif
                     </div>
                 @endif
 

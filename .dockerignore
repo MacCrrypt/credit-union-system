@@ -1,0 +1,70 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Version control
+.git/
+.gitignore
+
+
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+storage/logs/*.log
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
+*.log
+*.sqlite
+*.sqlite-journal
+
+# Testing
+tests/
+phpunit.xml
+*.phar
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-*
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+.docker
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Laravel specific
+public/hot
+public/storage
+public/build/
+storage/app/public/*
+
+# Backups
+*.backup
+*.old
+*.swp
+
+# Composer
+composer.phar
+
+# NPM
+npm-debug.log
+yarn-error.log

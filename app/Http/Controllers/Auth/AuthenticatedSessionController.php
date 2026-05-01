@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // This timestamp helps admins spot dormant accounts and supports leave/reactivation decisions.
+        $request->user()->forceFill([
+            'last_login_at' => now(),
+        ])->save();
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
